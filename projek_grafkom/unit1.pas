@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  Buttons, StdCtrls, Spin, ComCtrls, Menus;
+  Buttons, StdCtrls, Spin, ComCtrls, Menus, ExtDlgs, ColorBox;
 
 type
   Elemen=record
@@ -22,6 +22,9 @@ type
     Bawah: TBitBtn;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
+    Button1: TButton;
+    Button2: TButton;
+    clb1: TColorBox;
     ColorButton2: TColorButton;
     ColorDialog1: TColorDialog;
     Edit1: TEdit;
@@ -31,12 +34,14 @@ type
     Kiri: TBitBtn;
     Label15: TLabel;
     Label3: TLabel;
+    OpenPictureDialog1: TOpenPictureDialog;
     Panel4: TPanel;
     Panel5: TPanel;
     Label9: TLabel;
     Pentagon: TBitBtn;
     Label5: TLabel;
     Label6: TLabel;
+    SaveDialog1: TSaveDialog;
     SerongKananA: TBitBtn;
     SerongKananB: TBitBtn;
     SerongKiriA: TBitBtn;
@@ -48,6 +53,7 @@ type
     spd4: TSpeedButton;
     spdErase: TSpeedButton;
     SpeedButton2: TSpeedButton;
+    spdFlood: TSpeedButton;
     SpinEdit1: TSpinEdit;
     tebalskala: TSpinEdit;
     ZoomIn: TBitBtn;
@@ -72,6 +78,8 @@ type
     procedure AtasClick(Sender: TObject);
     procedure BawahClick(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure ColorButton2Click(Sender: TObject);
     procedure ColorBox1Change(Sender: TObject);
     procedure ColorButton1Click(Sender: TObject);
@@ -183,7 +191,6 @@ begin
   Destroy;
 end;
 
-
 procedure TProjek.BawahClick(Sender: TObject);
 begin
   for i:=1 to 20 do
@@ -194,6 +201,15 @@ begin
     objek[i].b:=objek[i].b+SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
   end;
+end;
+
+procedure TProjek.Button2Click(Sender: TObject);
+begin
+   OpenPictureDialog1.Execute;
+   if (OpenPictureDialog1.Files.Count = 1) and (FileExists(OpenPictureDialog1.FileName)) then
+     begin
+       Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+     end;
 end;
 
 procedure TProjek.BitBtn1Click(Sender: TObject);
@@ -210,6 +226,27 @@ begin
   objek[9].x:= 120;                    objek[9].y:= 150;
   TitikTengahObjek(Sender);
   FormShow(Sender);
+end;
+
+procedure TProjek.Button1Click(Sender: TObject);
+var
+  bitmaps : TBitmap;
+  recuto : TRect;
+begin
+  recuto := Rect(0,0,Image1.Width,Image1.Height);
+  bitmaps := NIL;
+  try
+    bitmaps := TBitmap.Create;
+    bitmaps.Width:=recuto.Right;
+    bitmaps.Height:=recuto.Bottom;
+    bitmaps.Canvas.CopyRect(recuto,Image1.Canvas,recuto);
+    if SaveDialog1.Execute then
+    begin
+      bitmaps.SaveToFile(SaveDialog1.FileName);
+    end;
+  finally
+    bitmaps.Free;
+  end;
 end;
 
 procedure TProjek.ColorButton2Click(Sender: TObject);
@@ -316,6 +353,7 @@ procedure TProjek.Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
 var
   a,b : string;
 begin
+
   a := IntToStr(X);
   b := IntToStr(Y);
   //Edit1.Caption:=IntToStr(X);
@@ -381,6 +419,8 @@ end;
 
 procedure TProjek.Image1MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+var
+  tempColor : TColor;
 begin
   Drawing:=False;
 
@@ -401,14 +441,21 @@ begin
    end else if spdErase.Down = true then
    begin
     Image1.Canvas.LineTo(X,Y);
+    Image1.Canvas.Pen.Color:=clBlack;
+    Image1.Canvas.Pen.Width:=1;
    end else if SpeedButton2.Down = true then
    begin
     dstCrop := Rect(0,0,X-prevX,Y-prevY);
     Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
     Image1.Canvas.CopyRect(dstCrop,Image2.Canvas,cropRect);
+   end else if spdFlood.Down then
+   begin
+    tempColor := Image1.Canvas.Pixels[X,Y];
+    Image1.Canvas.Brush.Style:=bsSolid;
+    Image1.Canvas.Brush.Color:=clb1.Selected;
+    Image1.Canvas.FloodFill(X,Y,tempColor,fsSurface);
+    Image1.Canvas.Brush.Style:=bsClear;
    end;
-   Image1.Canvas.Pen.Color:=clBlack;
-   Image1.Canvas.Pen.Width:=1;
    Image1.Visible:=true;
    msDown := false;
   end;
