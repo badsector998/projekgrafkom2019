@@ -39,6 +39,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     SaveDialog1: TSaveDialog;
+    sel: TShape;
     SerongKananA: TBitBtn;
     SerongKananB: TBitBtn;
     SerongKiriA: TBitBtn;
@@ -48,6 +49,7 @@ type
     spdcrl: TSpeedButton;
     spd4: TSpeedButton;
     spdErase: TSpeedButton;
+    spdSelect: TSpeedButton;
     SpeedButton2: TSpeedButton;
     spdFlood: TSpeedButton;
     SpinEdit1: TSpinEdit;
@@ -107,7 +109,6 @@ type
     procedure SerongKiriAClick(Sender: TObject);
     procedure SerongKiriBClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure spdfreeClick(Sender: TObject);
     procedure SudutClick(Sender: TObject);
     procedure TitikTengahObjek(Sender: TObject);
     procedure TebalGarisChange(Sender: TObject);
@@ -334,6 +335,10 @@ begin
   end else if spdErase.Down = true then
   begin
    Image1.Canvas.MoveTo(prevX,prevY);
+  end else if spdSelect.Down = true then
+  begin
+    sel.SetBounds(0,0,1,1);
+    sel.Visible:=true;
   end;
 end;
 
@@ -403,6 +408,12 @@ begin
    begin
      Image1Paint(Sender);
      cropRect := Rect(prevX,prevY,X,Y);
+   end else if spdSelect.Down = true then
+   begin
+    sel.Left:=Image1.Left+prevX;
+    sel.Top:=Image1.Top+prevY;
+    sel.Width:=X-prevX;
+    sel.Height:=Y-prevY;
    end;
   end;
 end;
@@ -445,6 +456,9 @@ begin
     Image1.Canvas.Brush.Color:=clb1.Selected;
     Image1.Canvas.FloodFill(X,Y,tempColor,fsSurface);
     Image1.Canvas.Brush.Style:=bsClear;
+   end else if spdSelect.Down = true then
+   begin
+    sel.Visible:=false;
    end;
    Image1.Visible:=true;
    msDown := false;
@@ -685,11 +699,6 @@ begin
   Fungsi:=1
 end;
 
-procedure TProjek.spdfreeClick(Sender: TObject);
-begin
-
-end;
-
 procedure TProjek.SudutClick(Sender: TObject);
 begin
   if Sudut.ItemIndex=0 then
@@ -704,17 +713,18 @@ end;
 
 procedure TProjek.TebalGarisChange(Sender: TObject);
 begin
-  if(TebalGaris.Value=1) then
-  Image1.Canvas.Pen.Width := 1
-  else if(TebalGaris.Value=2) then
-  Image1.Canvas.Pen.Width := 2
-  else if(TebalGaris.Value=3) then
-  Image1.Canvas.Pen.Width := 3
-  else if(TebalGaris.Value=4) then
-  Image1.Canvas.Pen.Width := 4
-  else if(TebalGaris.Value=5) then
-  Image1.Canvas.Pen.Width := 5;
+  //if(TebalGaris.Value=1) then
+  //Image1.Canvas.Pen.Width := 1
+  //else if(TebalGaris.Value=2) then
+  //Image1.Canvas.Pen.Width := 2
+  //else if(TebalGaris.Value=3) then
+  //Image1.Canvas.Pen.Width := 3
+  //else if(TebalGaris.Value=4) then
+  //Image1.Canvas.Pen.Width := 4
+  //else if(TebalGaris.Value=5) then
+  //Image1.Canvas.Pen.Width := 5;
   //FormShow(Sender);
+  Image1.Canvas.Pen.Width:=TebalGaris.Value;
   Image1Paint(Sender);
 end;
 
@@ -730,7 +740,7 @@ begin
     Image1.Canvas.Pen.Style := psDashDot
     else if(TipeGaris.ItemIndex=4) then
     Image1.Canvas.Pen.Style := psDashDotDot;
-    FormShow(Sender);
+    //FormShow(Sender);
     Image1Paint(Sender);
 end;
 

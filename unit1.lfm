@@ -1,7 +1,7 @@
 object Projek: TProjek
-  Left = 218
+  Left = 252
   Height = 658
-  Top = 26
+  Top = 21
   Width = 958
   Caption = 'Projek'
   ClientHeight = 658
@@ -1948,7 +1948,6 @@ object Projek: TProjek
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     }
     GroupIndex = 1
-    OnClick = spdfreeClick
   end
   object spdcrl: TSpeedButton
     Left = 568
@@ -2414,6 +2413,43 @@ object Projek: TProjek
     Width = 100
     ItemHeight = 16
     TabOrder = 16
+  end
+  object spdSelect: TSpeedButton
+    Left = 568
+    Height = 30
+    Top = 120
+    Width = 31
+    GroupIndex = 1
+  end
+  object sel: TShape
+    Left = 168
+    Height = 254
+    Top = 272
+    Width = 281
+    Pen.Color = clRed
+    Pen.Style = psDot
+    Visible = False
+  end
+  object cboFont: TComboBox
+    Left = 618
+    Height = 23
+    Top = 87
+    Width = 100
+    ItemHeight = 15
+    Items.Strings = (
+      '@Batang'
+      '@Arial Unicode MS'
+      '@Comic Sans MS'
+    )
+    TabOrder = 17
+  end
+  object edtText: TEdit
+    Left = 704
+    Height = 23
+    Top = 592
+    Width = 163
+    TabOrder = 18
+    Text = 'edtText'
   end
   object ColorDialog1: TColorDialog
     Color = clBlack

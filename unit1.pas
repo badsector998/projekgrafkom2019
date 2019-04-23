@@ -24,9 +24,11 @@ type
     BitBtn2: TBitBtn;
     Button1: TButton;
     Button2: TButton;
+    cboFont: TComboBox;
     clb1: TColorBox;
     ColorDialog1: TColorDialog;
-    Edit1: TEdit;
+    ComboBox1: TComboBox;
+    edtText: TEdit;
     Edit2: TEdit;
     Image2: TImage;
     Kanan: TBitBtn;
@@ -39,6 +41,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     SaveDialog1: TSaveDialog;
+    sel: TShape;
     SerongKananA: TBitBtn;
     SerongKananB: TBitBtn;
     SerongKiriA: TBitBtn;
@@ -48,6 +51,7 @@ type
     spdcrl: TSpeedButton;
     spd4: TSpeedButton;
     spdErase: TSpeedButton;
+    spdSelect: TSpeedButton;
     SpeedButton2: TSpeedButton;
     spdFlood: TSpeedButton;
     SpinEdit1: TSpinEdit;
@@ -107,7 +111,6 @@ type
     procedure SerongKiriAClick(Sender: TObject);
     procedure SerongKiriBClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure spdfreeClick(Sender: TObject);
     procedure SudutClick(Sender: TObject);
     procedure TitikTengahObjek(Sender: TObject);
     procedure TebalGarisChange(Sender: TObject);
@@ -334,6 +337,10 @@ begin
   end else if spdErase.Down = true then
   begin
    Image1.Canvas.MoveTo(prevX,prevY);
+  end else if spdSelect.Down = true then
+  begin
+    sel.SetBounds(0,0,1,1);
+    sel.Visible:=true;
   end;
 end;
 
@@ -346,7 +353,7 @@ begin
 
   a := IntToStr(X);
   b := IntToStr(Y);
-  //Edit1.Caption:=IntToStr(X);
+  //edtText.Caption:=IntToStr(X);
   //Edit2.Caption:=IntToStr(Y);
   Label5.Caption := a+','+b;
 //  if Fungsi=2 then
@@ -403,6 +410,12 @@ begin
    begin
      Image1Paint(Sender);
      cropRect := Rect(prevX,prevY,X,Y);
+   end else if spdSelect.Down = true then
+   begin
+    sel.Left:=Image1.Left+prevX;
+    sel.Top:=Image1.Top+prevY;
+    sel.Width:=X-prevX;
+    sel.Height:=Y-prevY;
    end;
   end;
 end;
@@ -411,6 +424,9 @@ procedure TProjek.Image1MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
   tempColor : TColor;
+  textArea : TRect;
+  myText : string;
+  myTextStyle : TTextStyle;
 begin
   Drawing:=False;
 
@@ -445,6 +461,19 @@ begin
     Image1.Canvas.Brush.Color:=clb1.Selected;
     Image1.Canvas.FloodFill(X,Y,tempColor,fsSurface);
     Image1.Canvas.Brush.Style:=bsClear;
+   end else if spdSelect.Down = true then
+   begin
+    sel.Visible:=false;
+    Image1.Canvas.Font.Name:=cboFont.Text;
+    Image1.Canvas.Font.Size:=TebalGaris.Value;
+    Image1.Canvas.Font.Color:=clb1.Selected;
+
+    myText := edtText.Text;
+    textArea := Rect(0,0,X,Y);
+    myTextStyle := Image1.Canvas.TextStyle;
+    myTextStyle.Wordbreak:=true;
+    myTextStyle.SingleLine:=false;
+    Image1.Canvas.TextRect(textArea,prevX,prevY,myText,myTextStyle);
    end;
    Image1.Visible:=true;
    msDown := false;
@@ -467,7 +496,7 @@ end;
 procedure TProjek.Image2MouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
-  Edit1.Caption:=IntToStr(X);
+  edtText.Caption:=IntToStr(X);
   Edit2.Caption:=IntToStr(Y);
 end;
 
@@ -685,11 +714,6 @@ begin
   Fungsi:=1
 end;
 
-procedure TProjek.spdfreeClick(Sender: TObject);
-begin
-
-end;
-
 procedure TProjek.SudutClick(Sender: TObject);
 begin
   if Sudut.ItemIndex=0 then
@@ -731,7 +755,7 @@ begin
     Image1.Canvas.Pen.Style := psDashDot
     else if(TipeGaris.ItemIndex=4) then
     Image1.Canvas.Pen.Style := psDashDotDot;
-    FormShow(Sender);
+    //FormShow(Sender);
     Image1Paint(Sender);
 end;
 
