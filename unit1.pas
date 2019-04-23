@@ -35,6 +35,7 @@ type
     Kiri: TBitBtn;
     Label15: TLabel;
     Label3: TLabel;
+    Label7: TLabel;
     OpenPictureDialog1: TOpenPictureDialog;
     Panel5: TPanel;
     Pentagon: TBitBtn;
@@ -51,7 +52,7 @@ type
     spdcrl: TSpeedButton;
     spd4: TSpeedButton;
     spdErase: TSpeedButton;
-    spdSelect: TSpeedButton;
+    spdText: TSpeedButton;
     SpeedButton2: TSpeedButton;
     spdFlood: TSpeedButton;
     SpinEdit1: TSpinEdit;
@@ -161,6 +162,7 @@ begin
         BoundaryFill(x,y-1,fill,boundary);
       end;
 end;
+
 
 procedure TProjek.TitikTengahObjek(Sender: TObject);
 begin
@@ -337,7 +339,7 @@ begin
   end else if spdErase.Down = true then
   begin
    Image1.Canvas.MoveTo(prevX,prevY);
-  end else if spdSelect.Down = true then
+  end else if spdText.Down = true then
   begin
     sel.SetBounds(0,0,1,1);
     sel.Visible:=true;
@@ -410,7 +412,7 @@ begin
    begin
      Image1Paint(Sender);
      cropRect := Rect(prevX,prevY,X,Y);
-   end else if spdSelect.Down = true then
+   end else if spdText.Down = true then
    begin
     sel.Left:=Image1.Left+prevX;
     sel.Top:=Image1.Top+prevY;
@@ -461,7 +463,7 @@ begin
     Image1.Canvas.Brush.Color:=clb1.Selected;
     Image1.Canvas.FloodFill(X,Y,tempColor,fsSurface);
     Image1.Canvas.Brush.Style:=bsClear;
-   end else if spdSelect.Down = true then
+   end else if spdText.Down = true then
    begin
     sel.Visible:=false;
     Image1.Canvas.Font.Name:=cboFont.Text;
