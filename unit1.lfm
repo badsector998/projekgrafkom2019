@@ -2408,7 +2408,7 @@ object Projek: TProjek
   end
   object clb1: TColorBox
     Left = 704
-    Height = 24
+    Height = 22
     Top = 232
     Width = 100
     ItemHeight = 16

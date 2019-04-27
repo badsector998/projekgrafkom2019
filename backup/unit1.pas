@@ -141,6 +141,8 @@ var
   prevX,prevY : integer;
   srcRect, dstRect : TRect;
   cropRect, dstCrop : TRect;
+  lin_l,lin_t,lin_X,lin_Y : integer;
+  rec_l,rec_t,rec_X,rec_Y : integer;
 
 implementation
 
@@ -162,7 +164,6 @@ begin
         BoundaryFill(x,y-1,fill,boundary);
       end;
 end;
-
 
 procedure TProjek.TitikTengahObjek(Sender: TObject);
 begin
@@ -201,6 +202,27 @@ begin
     objek[i].b:=objek[i].b+SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
   end;
+
+  if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       Image2.Canvas.CopyRect(dstRect,Image1.Canvas,srcRect);
+       lin_t:=lin_t + SpinEdit1.Value;
+       lin_Y:=lin_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_t:=rec_t + SpinEdit1.Value;
+       rec_Y:=rec_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.Button2Click(Sender: TObject);
@@ -211,6 +233,7 @@ begin
        Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
      end;
 end;
+
 
 procedure TProjek.BitBtn1Click(Sender: TObject);
 begin
@@ -269,6 +292,26 @@ begin
     begin
     objek[i].b:=objek[i].b-SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
+    end;
+
+    if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_t:=lin_t - SpinEdit1.Value;
+       lin_Y:=lin_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_t:=rec_t - SpinEdit1.Value;
+       rec_Y:=rec_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
     end;
 end;
 
@@ -440,9 +483,17 @@ begin
    end else if spdcrl.Down = true then
    begin
     Image1.Canvas.Ellipse(prevX,prevY,X,Y);
+    lin_l := prevX;
+    lin_t := prevY;
+    lin_X := X;
+    lin_Y := Y;
    end else if spdrec.Down = true then
    begin
     Image1.Canvas.Rectangle(prevX,prevY,X,Y);
+    rec_l := prevX;
+    rec_t := prevY;
+    rec_X := X;
+    rec_Y := Y;
    end else if spd4.Down = true then
    begin
     Image1.Canvas.LineTo(X,Y);
@@ -524,6 +575,26 @@ begin
     objek[i].a:=objek[i].a+SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
     end;
+
+   if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l + SpinEdit1.Value;
+       lin_X:=lin_X + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l + SpinEdit1.Value;
+       rec_X:=rec_X + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.KiriClick(Sender: TObject);
@@ -535,6 +606,26 @@ begin
     begin
     objek[i].a:=objek[i].a-SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
+    end;
+
+   if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l - SpinEdit1.Value;
+       lin_X:=lin_X - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l - SpinEdit1.Value;
+       rec_X:=rec_X - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
     end;
 end;
 
@@ -660,6 +751,30 @@ begin
     objek[i].b:=objek[i].b-SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
     end;
+
+  if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l + SpinEdit1.Value;
+       lin_t:=lin_t - SpinEdit1.Value;
+       lin_X:=lin_X + SpinEdit1.Value;
+       lin_Y:=lin_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l + SpinEdit1.Value;
+       rec_t:=rec_t - SpinEdit1.Value;
+       rec_X:=rec_X + SpinEdit1.Value;
+       rec_Y:=rec_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.SerongKananBClick(Sender: TObject);
@@ -676,6 +791,30 @@ begin
     objek[i].b:=objek[i].b+SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
 end;
+
+     if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l + SpinEdit1.Value;
+       lin_t:=lin_t + SpinEdit1.Value;
+       lin_X:=lin_X + SpinEdit1.Value;
+       lin_Y:=lin_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l + SpinEdit1.Value;
+       rec_t:=rec_t + SpinEdit1.Value;
+       rec_X:=rec_X + SpinEdit1.Value;
+       rec_Y:=rec_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.SerongKiriAClick(Sender: TObject);
@@ -692,6 +831,30 @@ begin
     objek[i].b:=objek[i].b-SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
     end;
+
+    if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l - SpinEdit1.Value;
+       lin_t:=lin_t - SpinEdit1.Value;
+       lin_X:=lin_X - SpinEdit1.Value;
+       lin_Y:=lin_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l - SpinEdit1.Value;
+       rec_t:=rec_t - SpinEdit1.Value;
+       rec_X:=rec_X - SpinEdit1.Value;
+       rec_Y:=rec_Y - SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.SerongKiriBClick(Sender: TObject);
@@ -707,6 +870,30 @@ begin
     objek[i].a:=objek[i].a-SpinEdit1.value;
     objek[i].b:=objek[i].b+SpinEdit1.value;
     BoundaryFill(objek[i].a,objek[i].b,objek[i].c,Image1.Canvas.Pen.Color);
+    end;
+
+  if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l - SpinEdit1.Value;
+       lin_t:=lin_t + SpinEdit1.Value;
+       lin_X:=lin_X - SpinEdit1.Value;
+       lin_Y:=lin_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l - SpinEdit1.Value;
+       rec_t:=rec_t + SpinEdit1.Value;
+       rec_X:=rec_X - SpinEdit1.Value;
+       rec_Y:=rec_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
     end;
 end;
 
@@ -781,6 +968,30 @@ begin
      end;
      FormShow(Sender);
      end;
+
+   if spdcrl.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       lin_l:=lin_l - SpinEdit1.Value;
+       lin_t:=lin_t - SpinEdit1.Value;
+       lin_X:=lin_X + SpinEdit1.Value;
+       lin_Y:=lin_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Ellipse(lin_l,lin_t,lin_X,lin_Y);
+      end;
+    end else if spdrec.Down = true then
+    begin
+      for i:=1 to 4 do
+      begin
+       rec_l:=rec_l - SpinEdit1.Value;
+       rec_t:=rec_t - SpinEdit1.Value;
+       rec_X:=rec_X + SpinEdit1.Value;
+       rec_Y:=rec_Y + SpinEdit1.Value;
+       Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
+       Image1.Canvas.Rectangle(rec_l,rec_t,rec_X,rec_Y);
+      end;
+    end;
 end;
 
 procedure TProjek.ZoomOutClick(Sender: TObject);
