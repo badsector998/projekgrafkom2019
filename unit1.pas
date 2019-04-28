@@ -24,6 +24,7 @@ type
     BitBtn2: TBitBtn;
     Button1: TButton;
     Button2: TButton;
+    Button3: TButton;
     cboFont: TComboBox;
     clb1: TColorBox;
     ColorDialog1: TColorDialog;
@@ -31,6 +32,7 @@ type
     edtText: TEdit;
     Edit2: TEdit;
     Image2: TImage;
+    Image3: TImage;
     Kanan: TBitBtn;
     Kiri: TBitBtn;
     Label15: TLabel;
@@ -81,6 +83,8 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
     procedure ColorBox1Change(Sender: TObject);
     procedure ColorButton1Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -139,7 +143,7 @@ var
   State,Fungsi: Integer;
   Drawing, msDown : Boolean;
   prevX,prevY : integer;
-  srcRect, dstRect : TRect;
+  srcRect, dstRect, rect3 : TRect;
   cropRect, dstCrop : TRect;
   lin_l,lin_t,lin_X,lin_Y : integer;
   rec_l,rec_t,rec_X,rec_Y : integer;
@@ -234,6 +238,15 @@ begin
      end;
 end;
 
+procedure TProjek.Button3Click(Sender: TObject);
+begin
+  Image1.Canvas.CopyRect(srcRect,Image3.Canvas,rect3);
+end;
+
+procedure TProjek.Button4Click(Sender: TObject);
+begin
+
+end;
 
 procedure TProjek.BitBtn1Click(Sender: TObject);
 begin
@@ -346,6 +359,8 @@ end;
 procedure TProjek.Image1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
+  rect3 := Rect(0,0,Image3.Width,Image3.Height);
+  Image3.Canvas.CopyRect(rect3,Image1.Canvas,srcRect);
   if Fungsi=1 then //warna
   begin
   k:=k+1;

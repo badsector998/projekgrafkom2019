@@ -2549,6 +2549,31 @@ object Projek: TProjek
     Caption = 'Enter Your text here'
     ParentColor = False
   end
+  object Image3: TImage
+    Left = 24
+    Height = 448
+    Top = 176
+    Width = 662
+    Visible = False
+  end
+  object Button3: TButton
+    Left = 530
+    Height = 25
+    Top = 133
+    Width = 75
+    Caption = 'undo'
+    OnClick = Button3Click
+    TabOrder = 19
+  end
+  object Button4: TButton
+    Left = 616
+    Height = 25
+    Top = 133
+    Width = 75
+    Caption = 'redo'
+    OnClick = Button4Click
+    TabOrder = 20
+  end
   object ColorDialog1: TColorDialog
     Color = clBlack
     CustomColors.Strings = (
