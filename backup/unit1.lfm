@@ -2566,12 +2566,11 @@ object Projek: TProjek
     TabOrder = 19
   end
   object Button4: TButton
-    Left = 616
+    Left = 632
     Height = 25
-    Top = 133
+    Top = 104
     Width = 75
-    Caption = 'redo'
-    OnClick = Button4Click
+    Caption = 'new'
     TabOrder = 20
   end
   object ColorDialog1: TColorDialog

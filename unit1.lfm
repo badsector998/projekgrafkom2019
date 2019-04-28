@@ -2565,6 +2565,15 @@ object Projek: TProjek
     OnClick = Button3Click
     TabOrder = 19
   end
+  object Button4: TButton
+    Left = 632
+    Height = 25
+    Top = 104
+    Width = 75
+    Caption = 'new'
+    OnClick = Button4Click
+    TabOrder = 20
+  end
   object ColorDialog1: TColorDialog
     Color = clBlack
     CustomColors.Strings = (

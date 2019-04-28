@@ -25,6 +25,7 @@ type
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
+    Button4: TButton;
     cboFont: TComboBox;
     clb1: TColorBox;
     ColorDialog1: TColorDialog;
@@ -245,7 +246,7 @@ end;
 
 procedure TProjek.Button4Click(Sender: TObject);
 begin
-
+  Image1.Canvas.Rectangle(0,0,Image1.Width,Image1.Height);
 end;
 
 procedure TProjek.BitBtn1Click(Sender: TObject);
